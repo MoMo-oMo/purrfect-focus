@@ -1,10 +1,14 @@
 <template>
-  <button
+  <div
     class="task-card"
     :class="`status-${task.status}`"
     :style="{ animationDelay: `${Math.min(index, 10) * 45}ms`, '--accent': accentColor }"
-    :disabled="task.status === 'completed'"
-    @click="$emit('select', task)"
+    role="button"
+    :tabindex="task.status === 'completed' ? -1 : 0"
+    :aria-disabled="task.status === 'completed'"
+    @click="task.status !== 'completed' && $emit('select', task)"
+    @keydown.enter="task.status !== 'completed' && $emit('select', task)"
+    @keydown.space.prevent="task.status !== 'completed' && $emit('select', task)"
   >
     <span class="accent-bar" />
     <div class="task-card-top">
@@ -18,7 +22,7 @@
       aria-label="Delete task"
       @click.stop="$emit('delete', task.id)"
     >✕</button>
-  </button>
+  </div>
 </template>
 
 <script setup>
@@ -88,20 +92,24 @@ const accentColor = computed(() => {
   background: var(--accent, #f0965a);
 }
 
-.task-card:hover:not(:disabled) {
+.task-card:not(.status-completed):hover {
   transform: translateY(-4px) scale(1.015);
   box-shadow: 0 14px 30px rgba(40, 28, 20, 0.14);
   border-color: var(--accent, rgba(240, 150, 90, 0.4));
 }
 
-.task-card:active:not(:disabled) {
+.task-card:not(.status-completed):active {
   transform: translateY(-1px) scale(0.99);
 }
 
-.task-card:disabled {
+.task-card:focus-visible {
+  outline: 2px solid var(--accent, #f0965a);
+  outline-offset: 2px;
+}
+
+.task-card.status-completed {
   cursor: default;
-  opacity: 0.55 !important;
-  animation: card-in 0.45s ease both;
+  opacity: 0.55;
 }
 
 .task-card-top {
