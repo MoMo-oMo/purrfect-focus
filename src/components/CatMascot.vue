@@ -1,6 +1,6 @@
 <template>
   <div class="cat-mascot-outer">
-    <div class="cat-mascot" :class="{ petting: isWiggling }" @click="pet">
+    <div class="cat-mascot" :class="{ petting: isWiggling, blink: isBlinking }" @click="pet">
       <img :src="catImage" alt="Cat mascot" />
     </div>
 
@@ -18,13 +18,16 @@
 </template>
 
 <script setup>
-import { ref, onBeforeUnmount } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import catImage from "../assets/pf cat.png";
 
 const isPetting = ref(false);
 const isWiggling = ref(false);
+const isBlinking = ref(false);
 let petTimeout = null;
 let wiggleTimeout = null;
+let idleInterval = null;
+let blinkTimeout = null;
 
 const hearts = [
   { cls: "h1" },
@@ -55,9 +58,23 @@ function pet() {
   });
 }
 
+onMounted(() => {
+  // Occasional little blink so the cat feels alive when idle, not just
+  // when petted.
+  idleInterval = setInterval(() => {
+    if (isWiggling.value) return;
+    isBlinking.value = true;
+    blinkTimeout = setTimeout(() => {
+      isBlinking.value = false;
+    }, 220);
+  }, 3200 + Math.random() * 2000);
+});
+
 onBeforeUnmount(() => {
   clearTimeout(petTimeout);
   clearTimeout(wiggleTimeout);
+  clearTimeout(blinkTimeout);
+  clearInterval(idleInterval);
 });
 
 defineExpose({ pet });
@@ -80,6 +97,15 @@ defineExpose({ pet });
 
 .cat-mascot.petting {
   animation: cat-wiggle 0.55s ease-in-out;
+}
+
+.cat-mascot.blink img {
+  animation: cat-blink 0.22s ease-in-out;
+}
+
+@keyframes cat-blink {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.85); }
 }
 
 .cat-mascot img {

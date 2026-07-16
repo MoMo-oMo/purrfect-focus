@@ -1,8 +1,10 @@
 <template>
+  <AmbientBackground />
   <router-view />
 </template>
 
 <script setup>
+import AmbientBackground from "./components/AmbientBackground.vue";
 </script>
 
 <style>

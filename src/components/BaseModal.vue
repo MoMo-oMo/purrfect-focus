@@ -40,6 +40,19 @@ defineEmits(["close"]);
   box-shadow: 0 24px 60px rgba(40, 28, 20, 0.28);
 }
 
+@media (max-width: 480px) {
+  .modal-overlay {
+    padding: 12px;
+    align-items: flex-end;
+  }
+
+  .modal-panel {
+    padding: 24px 20px;
+    border-radius: 22px 22px 0 0;
+    max-height: 85vh;
+  }
+}
+
 .modal-close {
   position: absolute;
   top: 16px;

@@ -28,9 +28,10 @@
 
       <div v-else class="task-grid">
         <TaskCard
-          v-for="task in sortedTasks"
+          v-for="(task, i) in sortedTasks"
           :key="task.id"
           :task="task"
+          :index="i"
           @select="selectedTask = task"
           @delete="deleteTask"
         />
@@ -87,6 +88,8 @@ function handleAddTask(payload) {
 
 <style scoped>
 .dashboard {
+  position: relative;
+  z-index: 1;
   min-height: 100vh;
   padding: clamp(20px, 4vw, 48px);
 }
@@ -225,5 +228,36 @@ function handleAddTask(payload) {
   margin: 0 0 22px;
   font-size: 0.9rem;
   color: #9a8a7d;
+}
+
+@media (max-width: 560px) {
+  .dash-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .header-actions {
+    justify-content: space-between;
+  }
+
+  .mini-title {
+    max-width: 90px;
+  }
+
+  .add-btn {
+    padding: 11px 18px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .brand-title {
+    font-size: 1.2rem;
+  }
+
+  .brand-icon {
+    width: 36px;
+    height: 36px;
+  }
 }
 </style>
