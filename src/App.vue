@@ -1,30 +1,33 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <router-view />
 </template>
 
+<script setup>
+</script>
+
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;800&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
 }
 
-nav {
-  padding: 30px;
+body {
+  font-family: "Quicksand", "Trebuchet MS", sans-serif;
+  background: linear-gradient(180deg, #fff8f0 0%, #fdf1e4 100%);
+  color: #2d2420;
 }
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
+button,
+input {
+  font-family: inherit;
 }
 </style>
