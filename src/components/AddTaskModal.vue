@@ -103,7 +103,7 @@ function submit() {
 }
 
 .field-input:focus {
-  border-color: #f0965a;
+  border-color: #c17f4e;
   background: #fff;
 }
 
@@ -143,13 +143,13 @@ function submit() {
   padding: 13px;
   border: none;
   border-radius: 999px;
-  background: linear-gradient(135deg, #f7ab58, #f0965a);
+  background: linear-gradient(135deg, #d9a066, #c17f4e);
   color: #fff;
   font: inherit;
   font-weight: 700;
   font-size: 0.95rem;
   cursor: pointer;
-  box-shadow: 0 10px 22px rgba(240, 150, 90, 0.35);
+  box-shadow: 0 10px 22px rgba(193, 127, 78, 0.35);
   transition: transform 0.15s ease;
 }
 

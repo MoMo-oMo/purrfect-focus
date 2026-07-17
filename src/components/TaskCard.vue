@@ -2,7 +2,7 @@
   <div
     class="task-card"
     :class="`status-${task.status}`"
-    :style="{ animationDelay: `${Math.min(index, 10) * 45}ms`, '--accent': accentColor }"
+    :style="{ animationDelay: `${Math.min(index, 10) * 45}ms`, '--accent': accentColor, '--tilt': `${tilt}deg` }"
     role="button"
     :tabindex="task.status === 'completed' ? -1 : 0"
     :aria-disabled="task.status === 'completed'"
@@ -10,7 +10,8 @@
     @keydown.enter="task.status !== 'completed' && $emit('select', task)"
     @keydown.space.prevent="task.status !== 'completed' && $emit('select', task)"
   >
-    <span class="accent-bar" />
+    <span class="pushpin" />
+    <span class="coffee-stain" />
     <div class="task-card-top">
       <span class="task-status-dot" :class="`dot-${task.status}`" />
       <span class="task-duration">{{ durationLabel }}</span>
@@ -58,58 +59,87 @@ const accentColor = computed(() => {
   const hue = Math.abs(hash) % 360;
   return `hsl(${hue}, 65%, 62%)`;
 });
+
+// Small varied resting tilt so cards read like hand-pinned notes rather
+// than a rigid grid.
+const TILTS = [-2.4, 1.8, -1.2, 2.1, -1.6, 1.3];
+const tilt = computed(() => TILTS[props.index % TILTS.length]);
 </script>
 
 <style scoped>
 .task-card {
   position: relative;
   text-align: left;
-  background: #fffdf9;
-  border: 1px solid rgba(45, 36, 32, 0.08);
-  border-radius: 18px;
-  padding: 18px 20px;
+  background: #fffaf2;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(139, 94, 60, 0.035) 0px,
+    rgba(139, 94, 60, 0.035) 1px,
+    transparent 1px,
+    transparent 26px
+  );
+  border: 1px solid rgba(90, 58, 39, 0.12);
+  border-radius: 10px;
+  padding: 20px 20px 18px;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(40, 28, 20, 0.06);
+  box-shadow: 0 6px 16px rgba(59, 36, 24, 0.14);
   transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
   font: inherit;
   width: 100%;
   overflow: hidden;
   opacity: 0;
+  transform: rotate(var(--tilt, 0deg));
   animation: card-in 0.45s ease both;
 }
 
 @keyframes card-in {
-  from { opacity: 0; transform: translateY(14px) scale(0.97); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from { opacity: 0; transform: translateY(14px) scale(0.97) rotate(var(--tilt, 0deg)); }
+  to { opacity: 1; transform: translateY(0) scale(1) rotate(var(--tilt, 0deg)); }
 }
 
-.accent-bar {
+.pushpin {
   position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background: var(--accent, #f0965a);
+  top: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ff9d8a, #c1503a 70%);
+  box-shadow: 0 3px 4px rgba(40, 20, 10, 0.35);
+  z-index: 2;
+}
+
+.coffee-stain {
+  position: absolute;
+  bottom: -14px;
+  right: -10px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid rgba(139, 94, 60, 0.08);
+  pointer-events: none;
 }
 
 .task-card:not(.status-completed):hover {
-  transform: translateY(-4px) scale(1.015);
-  box-shadow: 0 14px 30px rgba(40, 28, 20, 0.14);
-  border-color: var(--accent, rgba(240, 150, 90, 0.4));
+  transform: rotate(0deg) translateY(-4px) scale(1.03);
+  box-shadow: 0 16px 32px rgba(59, 36, 24, 0.22);
+  border-color: var(--accent, rgba(193, 127, 78, 0.5));
+  z-index: 3;
 }
 
 .task-card:not(.status-completed):active {
-  transform: translateY(-1px) scale(0.99);
+  transform: rotate(0deg) translateY(-1px) scale(0.99);
 }
 
 .task-card:focus-visible {
-  outline: 2px solid var(--accent, #f0965a);
+  outline: 2px solid var(--accent, #c17f4e);
   outline-offset: 2px;
 }
 
 .task-card.status-completed {
   cursor: default;
-  opacity: 0.55;
+  opacity: 0.6;
 }
 
 .task-card-top {
@@ -126,21 +156,21 @@ const accentColor = computed(() => {
 }
 .dot-pending { background: #d8cfc4; }
 .dot-active {
-  background: #f0965a;
-  box-shadow: 0 0 0 4px rgba(240, 150, 90, 0.18);
+  background: #c17f4e;
+  box-shadow: 0 0 0 4px rgba(193, 127, 78, 0.2);
   animation: dot-pulse 1.6s ease-in-out infinite;
 }
 .dot-completed { background: #7fbfae; }
 
 @keyframes dot-pulse {
-  0%, 100% { box-shadow: 0 0 0 4px rgba(240, 150, 90, 0.18); }
-  50% { box-shadow: 0 0 0 7px rgba(240, 150, 90, 0.28); }
+  0%, 100% { box-shadow: 0 0 0 4px rgba(193, 127, 78, 0.2); }
+  50% { box-shadow: 0 0 0 7px rgba(193, 127, 78, 0.3); }
 }
 
 .task-duration {
   font-size: 0.78rem;
   font-weight: 600;
-  color: #9a8a7d;
+  color: #8a7461;
   font-variant-numeric: tabular-nums;
 }
 
@@ -148,7 +178,7 @@ const accentColor = computed(() => {
   margin: 0 0 4px;
   font-size: 1.05rem;
   font-weight: 700;
-  color: #2d2420;
+  color: #3b2418;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -157,7 +187,7 @@ const accentColor = computed(() => {
 .task-subject {
   margin: 0;
   font-size: 0.85rem;
-  color: var(--accent, #9a8a7d);
+  color: var(--accent, #8a7461);
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -177,7 +207,7 @@ const accentColor = computed(() => {
   border-radius: 50%;
   border: none;
   background: transparent;
-  color: #c2b7ab;
+  color: #b8a290;
   font-size: 0.7rem;
   cursor: pointer;
   opacity: 0;

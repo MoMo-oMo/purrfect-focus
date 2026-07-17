@@ -24,7 +24,7 @@ body,
 
 body {
   font-family: "Quicksand", "Trebuchet MS", sans-serif;
-  background: linear-gradient(180deg, #fff8f0 0%, #fdf1e4 100%);
+  background: linear-gradient(180deg, #fdf3e8 0%, #f7e6d1 100%);
   color: #2d2420;
 }
 

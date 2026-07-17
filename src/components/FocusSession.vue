@@ -21,8 +21,8 @@
           <svg class="ring" viewBox="0 0 160 160">
             <defs>
               <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#ffb977" />
-                <stop offset="100%" stop-color="#f0965a" />
+                <stop offset="0%" stop-color="#e0b17d" />
+                <stop offset="100%" stop-color="#c17f4e" />
               </linearGradient>
             </defs>
             <circle class="ring-track" cx="80" cy="80" r="70" />
@@ -109,7 +109,7 @@ const catRef = ref(null);
 const confettiRef = ref(null);
 let breakInterval = null;
 
-const CONFETTI_COLORS = ["#f0965a", "#7fbfae", "#ea7089", "#ffcf6b", "#8ec6e6"];
+const CONFETTI_COLORS = ["#c17f4e", "#7fbfae", "#ea7089", "#ffcf6b", "#8ec6e6"];
 
 function burstConfetti() {
   const container = confettiRef.value;
@@ -304,8 +304,8 @@ onBeforeUnmount(clearBreakInterval);
 }
 
 @keyframes ring-glow {
-  0%, 100% { filter: drop-shadow(0 0 0 rgba(240, 150, 90, 0)); }
-  50% { filter: drop-shadow(0 0 14px rgba(240, 150, 90, 0.45)); }
+  0%, 100% { filter: drop-shadow(0 0 0 rgba(193, 127, 78, 0)); }
+  50% { filter: drop-shadow(0 0 14px rgba(193, 127, 78, 0.45)); }
 }
 
 .ring {
@@ -363,12 +363,12 @@ onBeforeUnmount(clearBreakInterval);
   padding: 13px 28px;
   border: none;
   border-radius: 999px;
-  background: linear-gradient(135deg, #f7ab58, #f0965a);
+  background: linear-gradient(135deg, #d9a066, #c17f4e);
   color: #fff;
   font: inherit;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 10px 22px rgba(240, 150, 90, 0.35);
+  box-shadow: 0 10px 22px rgba(193, 127, 78, 0.35);
   transition: transform 0.15s ease;
 }
 .primary-btn:hover { transform: translateY(-1px); }
@@ -376,10 +376,10 @@ onBeforeUnmount(clearBreakInterval);
 
 .secondary-btn {
   padding: 10px 18px;
-  border: 1.5px solid rgba(240, 150, 90, 0.5);
+  border: 1.5px solid rgba(193, 127, 78, 0.5);
   border-radius: 999px;
   background: transparent;
-  color: #d97f42;
+  color: #a8663a;
   font: inherit;
   font-weight: 700;
   cursor: pointer;
@@ -393,7 +393,7 @@ onBeforeUnmount(clearBreakInterval);
   border-radius: 50%;
   border: none;
   background: #fff2e4;
-  color: #d97f42;
+  color: #a8663a;
   font-size: 1.2rem;
   cursor: pointer;
   transition: transform 0.15s ease, background 0.15s ease;

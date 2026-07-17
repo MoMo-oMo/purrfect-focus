@@ -38,6 +38,13 @@
       </div>
     </main>
 
+    <footer class="counter-strip" aria-hidden="true">
+      <img :src="deskImage" alt="" class="desk-image" />
+      <div class="counter-cat">
+        <CatMascot />
+      </div>
+    </footer>
+
     <AddTaskModal
       v-if="showAddModal"
       @close="showAddModal = false"
@@ -57,9 +64,11 @@ import { ref, computed } from "vue";
 import TaskCard from "../components/TaskCard.vue";
 import AddTaskModal from "../components/AddTaskModal.vue";
 import FocusSession from "../components/FocusSession.vue";
+import CatMascot from "../components/CatMascot.vue";
 import { useTasks } from "../composables/useTasks";
 import { useFocusTimer } from "../composables/useFocusTimer";
 import catImage from "../assets/pf cat.png";
+import deskImage from "../assets/pf desk.png";
 
 const { tasks, addTask, deleteTask } = useTasks();
 const timer = useFocusTimer();
@@ -92,6 +101,7 @@ function handleAddTask(payload) {
   z-index: 1;
   min-height: 100vh;
   padding: clamp(20px, 4vw, 48px);
+  padding-bottom: 140px;
 }
 
 .dash-header {
@@ -147,8 +157,8 @@ function handleAddTask(payload) {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #f0965a;
-  box-shadow: 0 0 0 3px rgba(240, 150, 90, 0.18);
+  background: #c17f4e;
+  box-shadow: 0 0 0 3px rgba(193, 127, 78, 0.18);
 }
 
 .mini-title {
@@ -164,7 +174,7 @@ function handleAddTask(payload) {
 .mini-time {
   font-size: 0.82rem;
   font-weight: 700;
-  color: #d97f42;
+  color: #a8663a;
   font-variant-numeric: tabular-nums;
 }
 
@@ -175,13 +185,13 @@ function handleAddTask(payload) {
   padding: 12px 22px;
   border: none;
   border-radius: 999px;
-  background: linear-gradient(135deg, #f7ab58, #f0965a);
+  background: linear-gradient(135deg, #d9a066, #c17f4e);
   color: #fff;
   font: inherit;
   font-weight: 700;
   font-size: 0.9rem;
   cursor: pointer;
-  box-shadow: 0 10px 22px rgba(240, 150, 90, 0.3);
+  box-shadow: 0 10px 22px rgba(193, 127, 78, 0.3);
   transition: transform 0.15s ease;
   white-space: nowrap;
 }
@@ -258,6 +268,54 @@ function handleAddTask(payload) {
   .brand-icon {
     width: 36px;
     height: 36px;
+  }
+}
+
+.counter-strip {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.desk-image {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(520px, 90vw);
+  object-fit: contain;
+  filter: drop-shadow(0 -6px 18px rgba(59, 36, 24, 0.12));
+}
+
+.counter-cat {
+  position: relative;
+  bottom: 96px;
+  width: 110px;
+  pointer-events: auto;
+}
+
+@media (max-width: 560px) {
+  .counter-strip {
+    height: 90px;
+  }
+
+  .desk-image {
+    width: min(360px, 92vw);
+  }
+
+  .counter-cat {
+    width: 80px;
+    bottom: 70px;
+  }
+
+  .dashboard {
+    padding-bottom: 110px;
   }
 }
 </style>
