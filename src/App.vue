@@ -1,10 +1,12 @@
 <template>
   <AmbientBackground />
   <router-view />
+  <SplashScreen />
 </template>
 
 <script setup>
 import AmbientBackground from "./components/AmbientBackground.vue";
+import SplashScreen from "./components/SplashScreen.vue";
 </script>
 
 <style>

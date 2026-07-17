@@ -85,7 +85,7 @@ import Modal from "./BaseModal.vue";
 import CatMascot from "./CatMascot.vue";
 import { useFocusTimer } from "../composables/useFocusTimer";
 import { useTasks } from "../composables/useTasks";
-import { playBell, playTimerDone, playPurr } from "../sounds";
+import { playBell, playTimerDone, playPurr, startAmbience, stopAmbience } from "../sounds";
 import jarImage from "../assets/pf jar.png";
 import bellImage from "../assets/pf bell.png";
 
@@ -238,8 +238,21 @@ watch(
     if (isSessionForThisTask.value && prev > 0 && next <= 0) {
       playTimerDone();
       showDecision.value = true;
+      stopAmbience();
     }
   },
+);
+
+// Soft ambient hum plays for as long as this session is actively running —
+// keeps going if the modal is closed and the session continues in the
+// background, and fades out on pause/stop/finish.
+watch(
+  () => timer.state.isRunning && isSessionForThisTask.value,
+  (isActive) => {
+    if (isActive) startAmbience();
+    else stopAmbience();
+  },
+  { immediate: true },
 );
 
 onBeforeUnmount(clearBreakInterval);

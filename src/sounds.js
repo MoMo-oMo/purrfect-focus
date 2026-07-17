@@ -69,3 +69,59 @@ export function playPurr() {
   osc1.stop(t + 1.2);
   osc2.stop(t + 1.2);
 }
+
+// ─── Ambient coffee-shop hum ────────────────────────────────────────────
+// A soft, warm drone that plays while a focus session is active — evokes
+// sitting somewhere cozy rather than a bare timer ticking down.
+let ambience = null;
+
+export function startAmbience() {
+  if (ambience) return;
+  const audioCtx = getContext();
+
+  const filter = audioCtx.createBiquadFilter();
+  filter.type = "lowpass";
+  filter.frequency.value = 800;
+  filter.connect(audioCtx.destination);
+
+  const masterGain = audioCtx.createGain();
+  masterGain.gain.value = 0.001;
+  masterGain.connect(filter);
+  masterGain.gain.linearRampToValueAtTime(0.05, audioCtx.currentTime + 1.5);
+
+  const osc1 = audioCtx.createOscillator();
+  osc1.type = "sine";
+  osc1.frequency.value = 130.81; // C3
+  const osc2 = audioCtx.createOscillator();
+  osc2.type = "sine";
+  osc2.frequency.value = 196.0; // G3, a warm fifth above
+
+  osc1.connect(masterGain);
+  osc2.connect(masterGain);
+
+  // Slow LFO so the hum gently breathes instead of sitting dead flat
+  const lfo = audioCtx.createOscillator();
+  lfo.frequency.value = 0.12;
+  const lfoGain = audioCtx.createGain();
+  lfoGain.gain.value = 0.02;
+  lfo.connect(lfoGain);
+  lfoGain.connect(masterGain.gain);
+
+  osc1.start();
+  osc2.start();
+  lfo.start();
+
+  ambience = { osc1, osc2, lfo, masterGain, filter };
+}
+
+export function stopAmbience() {
+  if (!ambience) return;
+  const { osc1, osc2, lfo, masterGain } = ambience;
+  const audioCtx = getContext();
+  const t = audioCtx.currentTime;
+  masterGain.gain.cancelScheduledValues(t);
+  masterGain.gain.setValueAtTime(masterGain.gain.value, t);
+  masterGain.gain.linearRampToValueAtTime(0.001, t + 0.6);
+  [osc1, osc2, lfo].forEach((node) => node.stop(t + 0.65));
+  ambience = null;
+}

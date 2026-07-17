@@ -112,7 +112,13 @@ defineExpose({ pet });
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 8px 16px rgba(40, 28, 20, 0.15));
+  /* The cat is white — without a contrast halo it disappears against the
+     cream background, so trace its silhouette with a soft warm glow plus
+     a grounding shadow. */
+  filter:
+    drop-shadow(0 0 10px rgba(193, 127, 78, 0.45))
+    drop-shadow(0 0 3px rgba(90, 58, 39, 0.35))
+    drop-shadow(0 8px 14px rgba(40, 28, 20, 0.2));
 }
 
 .purr-text {
